@@ -57,6 +57,9 @@ public class RegistrationViewController extends com.alexanderthelen.applicationk
     protected ToggleGroup chefredakteurToggleGroup;
     @FXML
     protected TextField telefonnummerTextField;
+    @FXML
+    protected Label telefonnummerLabel;
+
 
     private String required = "required";
 
@@ -88,6 +91,16 @@ public class RegistrationViewController extends com.alexanderthelen.applicationk
         sexTextField.getItems().addAll("maennlich", "weiblich");
         sexTextField.setValue("maennlich");
 
+        chefredakteurToggleGroup.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
+                    if (newValue == yesChefredakteurRadioButton) {
+                        telefonnummerLabel.setVisible(true);
+                        telefonnummerTextField.setVisible(true);
+                    }
+                    else {
+                        telefonnummerLabel.setVisible(false);
+                        telefonnummerTextField.setVisible(false);
+                    }
+                });
 
         redakteurToggleGroup.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue == yesRedakteurRadioButton) {
@@ -106,16 +119,24 @@ public class RegistrationViewController extends com.alexanderthelen.applicationk
                 noChefredakteurRadioButton.setSelected(true);
                 yesChefredakteurRadioButton.setVisible(true);
                 noChefredakteurRadioButton.setVisible(true);
-            } else {
-                nachnameTextField.setDisable(true);
-                nachnameTextField.getStyleClass().remove(this.required);
-                vornameTextField.setDisable(true);
-                vornameTextField.getStyleClass().remove(this.required);
-                biographieTextField.setDisable(true);
 
+            } else {
+                nachnameLabel.setVisible(false);
+                nachnameTextField.setVisible(false);
+                vornameLabel.setVisible(false);
+                vornameTextField.setVisible(false);
+                biographieLabel.setVisible(false);
+                biographieTextField.setVisible(false);
+
+                yesChefredakteurRadioButton.setVisible(false);
                 noChefredakteurRadioButton.setSelected(true);
-                yesChefredakteurRadioButton.setDisable(false);
-                noChefredakteurRadioButton.setDisable(false);
+                noChefredakteurRadioButton.setVisible(false);
+
+
+                telefonnummerLabel.setVisible(false);
+                telefonnummerTextField.setVisible(false);
+
+
             }
         });
     }
@@ -128,6 +149,14 @@ public class RegistrationViewController extends com.alexanderthelen.applicationk
         inputNodes.add(passwordTextField);
         inputNodes.add(birthdayTextField);
         inputNodes.add(sexTextField);
+        if(yesRedakteurRadioButton.isSelected()) {
+            inputNodes.add(nachnameTextField);
+            inputNodes.add(vornameTextField);
+            inputNodes.add(biographieTextField);
+        }
+        if(yesChefredakteurRadioButton.isSelected()) {
+            inputNodes.add(telefonnummerTextField);
+        }
         return inputNodes;
     }
 
@@ -139,6 +168,16 @@ public class RegistrationViewController extends com.alexanderthelen.applicationk
         data.put("password", passwordTextField.getText() == null ? null : passwordTextField.getText());
         data.put("birthday", birthdayTextField.getText() == null ? null : birthdayTextField.getText());
         data.put("sex", sexTextField.getValue() == null ? null : sexTextField.getValue());
+        data.put("isRedakteur", yesRedakteurRadioButton.isSelected() ? true : false);
+        data.put("isChefredakteur", yesChefredakteurRadioButton.isSelected() ? true : false);
+        if(yesRedakteurRadioButton.isSelected()) {
+            data.put("nachname", nachnameTextField.getText() == null ? null : nachnameTextField.getText());
+            data.put("vorname", vornameTextField.getText() == null ? null : vornameTextField.getText());
+            data.put("biographie", biographieTextField.getText() == null ? null : biographieTextField.getText());
+        }
+        if(yesChefredakteurRadioButton.isSelected()) {
+            data.put("telefonnummer", telefonnummerTextField.getText() == null ? null : biographieTextField.getText());
+        }
         return data;
     }
 

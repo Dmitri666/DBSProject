@@ -70,7 +70,7 @@
                                 <RadioButton fx:id="noChefredakteurRadioButton" visible="false" mnemonicParsing="false" selected="true" text="Nein" toggleGroup="$chefredakteurToggleGroup" />
                             </children>
                         </HBox>
-                        <Label text="Telefonnummer:" GridPane.rowIndex="10" />
+                        <Label text="Telefonnummer:" visible="false" fx:id="telefonnummerLabel" GridPane.rowIndex="10" />
                         <TextField fx:id="telefonnummerTextField" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="10" />
                     </children>
                     <columnConstraints>

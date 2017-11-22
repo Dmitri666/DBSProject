@@ -1,19 +1,39 @@
 package de.hhu.cs.dbs.project.table.account;
 
+import com.alexanderthelen.applicationkit.Application;
 import com.alexanderthelen.applicationkit.database.Data;
 import com.alexanderthelen.applicationkit.database.Table;
 
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public class Account extends Table {
     @Override
     public String getSelectQueryForTableWithFilter(String filter) throws SQLException {
-        throw new SQLException(getClass().getName() + ".getSelectQueryForTableWithFilter(String) nicht implementiert.");
+        Integer permission = (Integer) Application.getInstance().getData().get("permission");
+        if ( permission ==  2) {
+            return "SELECT Benutzername , EMail, Passwort, Geburtsdatum, Geschlecht  FROM Nutzer WHERE Benutzername = '" + Application.getInstance().getData().get("username") + "'";
+        }
+        else if ( permission ==  1){
+            return "SELECT N.Benutzername , N.EMail, N.Passwort , N.Geburtsdatum, N.Geschlecht, P.Vorname , P.Nachname, P.Biographie FROM Nutzer N, Redakteur P WHERE N.Benutzername = P.Benutzername AND N.Benutzername = '" + Application.getInstance().getData().get("username") + "'";
+        }
+        else {
+            return "SELECT N.Benutzername , N.EMail, N.Passwort , N.Geburtsdatum, N.Geschlecht, P.Vorname , P.Nachname, P.Biographie, C.Telefonnummer FROM Nutzer N, Redakteur P, Chefredakteur C, WHERE N.Benutzername = P.Benutzername AND P.Benutzername = C.Benutzername AND N.Benutzername = '" + Application.getInstance().getData().get("username") + "'";
+        }
     }
 
     @Override
     public String getSelectQueryForRowWithData(Data data) throws SQLException {
-        throw new SQLException(getClass().getName() + ".getSelectQueryForRowWithData(Data) nicht implementiert.");
+        Integer permission = (Integer) Application.getInstance().getData().get("permission");
+        if ( permission ==  2) {
+            return "SELECT Benutzername , EMail, Passwort, Geburtsdatum, Geschlecht  FROM Nutzer WHERE Benutzername = '" + Application.getInstance().getData().get("username") + "'";
+        }
+        else if ( permission ==  1){
+            return "SELECT N.Benutzername , N.EMail, N.Passwort , N.Geburtsdatum, N.Geschlecht, P.Vorname , P.Nachname, P.Biographie FROM Nutzer N, Redakteur P WHERE N.Benutzername = P.Benutzername AND N.Benutzername = '" + Application.getInstance().getData().get("username") + "'";
+        }
+        else {
+            return "SELECT N.Benutzername , N.EMail, N.Passwort , N.Geburtsdatum, N.Geschlecht, P.Vorname , P.Nachname, P.Biographie, C.Telefonnummer FROM Nutzer N, Redakteur P, Chefredakteur C, WHERE N.Benutzername = P.Benutzername AND P.Benutzername = C.Benutzername AND N.Benutzername = '" + Application.getInstance().getData().get("username") + "'";
+        }
     }
 
     @Override
@@ -23,7 +43,32 @@ public class Account extends Table {
 
     @Override
     public void updateRowWithData(Data oldData, Data newData) throws SQLException {
-        throw new SQLException(getClass().getName() + ".updateRowWithData(Data, Data) nicht implementiert.");
+        PreparedStatement preparedStatement = Application.getInstance().getConnection().prepareStatement("UPDATE Nutzer SET EMail = ?,Passwort = ?, Geburtsdatum = ?, Geschlecht = ?  WHERE Benutzername = ?");
+        preparedStatement.setObject(1, newData.get("Nutzer.EMail"));
+        preparedStatement.setObject(2, newData.get("Nutzer.Passwort"));
+        preparedStatement.setObject(3, newData.get("Nutzer.Geburtsdatum"));
+        preparedStatement.setObject(4, newData.get("Nutzer.Geschlecht"));
+        preparedStatement.setObject(5, Application.getInstance().getData().get("username"));
+        preparedStatement.executeUpdate();
+
+        Integer permission = (Integer) Application.getInstance().getData().get("permission");
+
+        if (permission == 1  || permission == 0) {
+
+            PreparedStatement pstm = Application.getInstance().getConnection().prepareStatement("UPDATE Redakteur SET Vorname = ?,Nachname = ? ,Biographie = ? WHERE Benutzername = ?");
+            pstm.setObject(1, newData.get("Schauspieler.Vorname"));
+            pstm.setObject(2, newData.get("Schauspieler.Nachname"));
+            pstm.setObject(3, newData.get("Schauspieler.Biographie"));
+            pstm.setObject(4, Application.getInstance().getData().get("username"));
+            pstm.executeUpdate();
+        }
+        if (permission == 0) {
+            PreparedStatement pstm = Application.getInstance().getConnection().prepareStatement("UPDATE Chefredakteur SET Telefonnummer = ? WHERE Benutzername = ?");
+            pstm.setObject(1, newData.get("Schauspieler.Telefonnummer"));
+            pstm.setObject(2, Application.getInstance().getData().get("username"));
+            pstm.executeUpdate();
+
+        }
     }
 
     @Override
