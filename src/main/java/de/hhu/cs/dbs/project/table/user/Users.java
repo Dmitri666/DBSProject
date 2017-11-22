@@ -8,7 +8,12 @@ import java.sql.SQLException;
 public class Users extends Table {
     @Override
     public String getSelectQueryForTableWithFilter(String filter) throws SQLException {
-        throw new SQLException(getClass().getName() + ".getSelectQueryForTableWithFilter(String) nicht implementiert.");
+        String selectQuery = "SELECT EMail, Benutzername, Geburtsdatum, Geschlecht FROM Nutzer";
+        if ( filter != null && ! filter .isEmpty() )
+        {
+            selectQuery += " WHERE Benutzername LIKE '%" + filter + "%'";
+        }
+        return selectQuery;
     }
 
     @Override

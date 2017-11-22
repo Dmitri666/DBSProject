@@ -43,43 +43,46 @@ public class AuthenticationViewController extends com.alexanderthelen.applicatio
         conn.getRawConnection().setAutoCommit(false);
 
         try {
-            String sql = "INSERT INTO Nutzer(Benutzername,EMail,Geburtsdatum,Passwort) VALUES(?,?,?,?)";
+            String sql = "INSERT INTO Nutzer(Benutzername,EMail,Geburtsdatum,Passwort, Geschlecht) VALUES(?,?,?,?,?)";
             PreparedStatement pstmt = conn.prepareStatement(sql);
 
             pstmt.setString(1, data.get("username").toString());
             pstmt.setString(2, data.get("email").toString());
-            pstmt.setString(3, data.get("password").toString());
+            pstmt.setString(3, data.get("birthday").toString());
+            pstmt.setString(4, data.get("password").toString());
+            pstmt.setString(5, data.get("sex").toString());
             pstmt.executeUpdate();
 
-            if ((boolean) data.get("isPremium")) {
-                String premiumSql = "INSERT INTO Premium_Nutzer(Benutzername) VALUES(?)";
-                PreparedStatement pstmt1 = Application.getInstance().getConnection().prepareStatement(premiumSql);
-
-                pstmt1.setString(1, data.get("username").toString());
-
-                pstmt1.executeUpdate();
-            }
-
-            if ((boolean) data.get("isActor")) {
-                String actorSql = "INSERT INTO Schauspieler(Benutzername,Vorname,Nachname,Kunstlername,Geburtsdatum,Geburtsort) VALUES(?,?,?,?,?,?)";
-                PreparedStatement pstmt2 = Application.getInstance().getConnection().prepareStatement(actorSql);
-
-                pstmt2.setString(1, data.get("username").toString());
-                pstmt2.setString(2, data.get("firstName").toString());
-                pstmt2.setString(3, data.get("lastName").toString());
-                if (data.containsKey("alias")) {
-                    pstmt2.setString(4, data.get("alias").toString());
-                } else {
-                    pstmt2.setNull(4, Types.VARCHAR);
-                }
-
-                pstmt2.setString(5, data.get("birthdate").toString());
-                pstmt2.setString(6, data.get("birthplace").toString());
-
-                pstmt2.executeUpdate();
-            }
+//            if ((boolean) data.get("isPremium")) {
+//                String premiumSql = "INSERT INTO Premium_Nutzer(Benutzername) VALUES(?)";
+//                PreparedStatement pstmt1 = Application.getInstance().getConnection().prepareStatement(premiumSql);
+//
+//                pstmt1.setString(1, data.get("username").toString());
+//
+//                pstmt1.executeUpdate();
+//            }
+//
+//            if ((boolean) data.get("isActor")) {
+//                String actorSql = "INSERT INTO Schauspieler(Benutzername,Vorname,Nachname,Kunstlername,Geburtsdatum,Geburtsort) VALUES(?,?,?,?,?,?)";
+//                PreparedStatement pstmt2 = Application.getInstance().getConnection().prepareStatement(actorSql);
+//
+//                pstmt2.setString(1, data.get("username").toString());
+//                pstmt2.setString(2, data.get("firstName").toString());
+//                pstmt2.setString(3, data.get("lastName").toString());
+//                if (data.containsKey("alias")) {
+//                    pstmt2.setString(4, data.get("alias").toString());
+//                } else {
+//                    pstmt2.setNull(4, Types.VARCHAR);
+//                }
+//
+//                pstmt2.setString(5, data.get("birthdate").toString());
+//                pstmt2.setString(6, data.get("birthplace").toString());
+//
+//                pstmt2.executeUpdate();
+//            }
 
             conn.getRawConnection().commit();
+            conn.getRawConnection().setAutoCommit(true);
         }
         catch (Exception ex) {
             try {
