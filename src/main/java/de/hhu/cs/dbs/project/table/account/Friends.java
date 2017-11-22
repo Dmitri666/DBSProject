@@ -26,7 +26,7 @@ public class Friends extends Table {
 
     @Override
     public void insertRowWithData(Data data) throws SQLException {
-        if (!Application.getInstance().getData().get("username").equals(data.get("NutzerBefreundetNutzer.Freund"))) {
+        if (Application.getInstance().getData().get("username").equals(data.get("NutzerBefreundetNutzer.Freund"))) {
             throw new SQLException("Der gleiche Nutzer.");
         }
 
