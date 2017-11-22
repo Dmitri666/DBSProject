@@ -1,0 +1,43 @@
+buildscript {
+    repositories {
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+    dependencies {
+        classpath "com.github.jengelman.gradle.plugins:shadow:2.0.1"
+        classpath "gradle.plugin.com.alexanderthelen.gitrepositoriesplugin:GitRepositoriesPlugin:1.4.0"
+    }
+}
+
+apply plugin: "java"
+apply plugin: "application"
+apply plugin: "maven-publish"
+apply plugin: "idea"
+apply plugin: "eclipse"
+apply plugin: "com.alexanderthelen.gitrepositoriesplugin"
+apply plugin: "com.github.johnrengelman.shadow"
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile "org.xerial:sqlite-jdbc:3.16.1+"
+    git "de.uni-duesseldorf.cs.gitlab.thelen:ApplicationKit:0.0.1"
+    testCompile "org.junit.jupiter:junit-jupiter-api:5.0.2"
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+        }
+    }
+}
+
+group "de.hhu.cs.dbs"
+version "0.0.1"
+description = "DBS project"
+sourceCompatibility = 1.8
+mainClassName = "de.hhu.cs.dbs.project.Project"
