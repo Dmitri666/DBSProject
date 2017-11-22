@@ -18,7 +18,7 @@ public class Account extends Table {
             return "SELECT N.Benutzername , N.EMail, N.Passwort , N.Geburtsdatum, N.Geschlecht, P.Vorname , P.Nachname, P.Biographie FROM Nutzer N, Redakteur P WHERE N.Benutzername = P.Benutzername AND N.Benutzername = '" + Application.getInstance().getData().get("username") + "'";
         }
         else {
-            return "SELECT N.Benutzername , N.EMail, N.Passwort , N.Geburtsdatum, N.Geschlecht, P.Vorname , P.Nachname, P.Biographie, C.Telefonnummer FROM Nutzer N, Redakteur P, Chefredakteur C, WHERE N.Benutzername = P.Benutzername AND P.Benutzername = C.Benutzername AND N.Benutzername = '" + Application.getInstance().getData().get("username") + "'";
+            return "SELECT N.Benutzername , N.EMail, N.Passwort , N.Geburtsdatum, N.Geschlecht, P.Vorname , P.Nachname, P.Biographie, C.Telefonnummer FROM Nutzer N, Redakteur P, Chefredakteur C WHERE N.Benutzername = P.Benutzername AND P.Benutzername = C.Benutzername AND N.Benutzername = '" + Application.getInstance().getData().get("username") + "'";
         }
     }
 
@@ -32,7 +32,7 @@ public class Account extends Table {
             return "SELECT N.Benutzername , N.EMail, N.Passwort , N.Geburtsdatum, N.Geschlecht, P.Vorname , P.Nachname, P.Biographie FROM Nutzer N, Redakteur P WHERE N.Benutzername = P.Benutzername AND N.Benutzername = '" + Application.getInstance().getData().get("username") + "'";
         }
         else {
-            return "SELECT N.Benutzername , N.EMail, N.Passwort , N.Geburtsdatum, N.Geschlecht, P.Vorname , P.Nachname, P.Biographie, C.Telefonnummer FROM Nutzer N, Redakteur P, Chefredakteur C, WHERE N.Benutzername = P.Benutzername AND P.Benutzername = C.Benutzername AND N.Benutzername = '" + Application.getInstance().getData().get("username") + "'";
+            return "SELECT N.Benutzername , N.EMail, N.Passwort , N.Geburtsdatum, N.Geschlecht, P.Vorname , P.Nachname, P.Biographie, C.Telefonnummer FROM Nutzer N, Redakteur P, Chefredakteur C WHERE N.Benutzername = P.Benutzername AND P.Benutzername = C.Benutzername AND N.Benutzername = '" + Application.getInstance().getData().get("username") + "'";
         }
     }
 
@@ -56,15 +56,15 @@ public class Account extends Table {
         if (permission == 1  || permission == 0) {
 
             PreparedStatement pstm = Application.getInstance().getConnection().prepareStatement("UPDATE Redakteur SET Vorname = ?,Nachname = ? ,Biographie = ? WHERE Benutzername = ?");
-            pstm.setObject(1, newData.get("Schauspieler.Vorname"));
-            pstm.setObject(2, newData.get("Schauspieler.Nachname"));
-            pstm.setObject(3, newData.get("Schauspieler.Biographie"));
+            pstm.setObject(1, newData.get("Redakteur.Vorname"));
+            pstm.setObject(2, newData.get("Redakteur.Nachname"));
+            pstm.setObject(3, newData.get("Redakteur.Biographie"));
             pstm.setObject(4, Application.getInstance().getData().get("username"));
             pstm.executeUpdate();
         }
         if (permission == 0) {
             PreparedStatement pstm = Application.getInstance().getConnection().prepareStatement("UPDATE Chefredakteur SET Telefonnummer = ? WHERE Benutzername = ?");
-            pstm.setObject(1, newData.get("Schauspieler.Telefonnummer"));
+            pstm.setObject(1, newData.get("Chefredakteur.Telefonnummer"));
             pstm.setObject(2, Application.getInstance().getData().get("username"));
             pstm.executeUpdate();
 
