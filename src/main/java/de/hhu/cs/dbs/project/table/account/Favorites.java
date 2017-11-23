@@ -8,7 +8,13 @@ import java.sql.SQLException;
 public class Favorites extends Table {
     @Override
     public String getSelectQueryForTableWithFilter(String filter) throws SQLException {
-        throw new SQLException(getClass().getName() + ".getSelectQueryForTableWithFilter(String) nicht implementiert.");
+        String selectQuery = "SELECT B.*  FROM NutzerFavorisiertBlogeintrag B WHERE B.Nutzer = '%" + Application.getInstance().getData().get("username") + "%'";
+        if ( filter != null && ! filter .isEmpty() )
+        {
+            selectQuery += " WHERE B.Redakteur LIKE '%" + filter + "%'";
+        }
+        selectQuery = selectQuery + " ORDER BY B.Aenderungsdatum";
+        return selectQuery;
     }
 
     @Override

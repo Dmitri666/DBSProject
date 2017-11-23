@@ -1,5 +1,6 @@
 package de.hhu.cs.dbs.project.table.blog;
 
+import com.alexanderthelen.applicationkit.Application;
 import com.alexanderthelen.applicationkit.database.Data;
 import com.alexanderthelen.applicationkit.database.Table;
 
@@ -8,7 +9,13 @@ import java.sql.SQLException;
 public class Blogentries extends Table {
     @Override
     public String getSelectQueryForTableWithFilter(String filter) throws SQLException {
-        throw new SQLException(getClass().getName() + ".getSelectQueryForTableWithFilter(String) nicht implementiert.");
+        String selectQuery = "SELECT B.*  FROM Blogeintrag B ";
+        if ( filter != null && ! filter .isEmpty() )
+        {
+            selectQuery += " WHERE B.Redakteur LIKE '%" + filter + "%'";
+        }
+        selectQuery = selectQuery + " ORDER BY B.Aenderungsdatum";
+        return selectQuery;
     }
 
     @Override
