@@ -6,6 +6,8 @@ import com.alexanderthelen.applicationkit.database.Table;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Account extends Table {
     @Override
@@ -18,7 +20,7 @@ public class Account extends Table {
             return "SELECT N.Benutzername , N.EMail, N.Passwort , N.Geburtsdatum, N.Geschlecht, P.Vorname , P.Nachname, P.Biographie FROM Nutzer N, Redakteur P WHERE N.Benutzername = P.Benutzername AND N.Benutzername = '" + Application.getInstance().getData().get("username") + "'";
         }
         else {
-            return "SELECT N.Benutzername , N.EMail, N.Passwort , N.Geburtsdatum, N.Geschlecht, P.Vorname , P.Nachname, P.Biographie, C.Telefonnummer FROM Nutzer N, Redakteur P, Chefredakteur C WHERE N.Benutzername = P.Benutzername AND P.Benutzername = C.Benutzername AND N.Benutzername = '" + Application.getInstance().getData().get("username") + "'";
+            return "SELECT N.Benutzername , N.EMail, N.Passwort , N.Geburtsdatum, N.Geschlecht, P.Vorname , P.Nachname, P.Biographie, substr(C.Telefonnummer,2,length(C.Telefonnummer) - 2) AS Telefonnummer FROM Nutzer N, Redakteur P, Chefredakteur C WHERE N.Benutzername = P.Benutzername AND P.Benutzername = C.Benutzername AND N.Benutzername = '" + Application.getInstance().getData().get("username") + "'";
         }
     }
 
@@ -32,7 +34,7 @@ public class Account extends Table {
             return "SELECT N.Benutzername , N.EMail, N.Passwort , N.Geburtsdatum, N.Geschlecht, P.Vorname , P.Nachname, P.Biographie FROM Nutzer N, Redakteur P WHERE N.Benutzername = P.Benutzername AND N.Benutzername = '" + Application.getInstance().getData().get("username") + "'";
         }
         else {
-            return "SELECT N.Benutzername , N.EMail, N.Passwort , N.Geburtsdatum, N.Geschlecht, P.Vorname , P.Nachname, P.Biographie, C.Telefonnummer FROM Nutzer N, Redakteur P, Chefredakteur C WHERE N.Benutzername = P.Benutzername AND P.Benutzername = C.Benutzername AND N.Benutzername = '" + Application.getInstance().getData().get("username") + "'";
+            return "SELECT N.Benutzername , N.EMail, N.Passwort , N.Geburtsdatum, N.Geschlecht, P.Vorname , P.Nachname, P.Biographie, substr(C.Telefonnummer,2,length(C.Telefonnummer) - 2) AS Telefonnummer FROM Nutzer N, Redakteur P, Chefredakteur C WHERE N.Benutzername = P.Benutzername AND P.Benutzername = C.Benutzername AND N.Benutzername = '" + Application.getInstance().getData().get("username") + "'";
         }
     }
 
@@ -43,6 +45,9 @@ public class Account extends Table {
 
     @Override
     public void updateRowWithData(Data oldData, Data newData) throws SQLException {
+        if(!isValidEmail((String)newData.get("Nutzer.EMail"))) {
+            throw new SQLException("Invalide Email");
+        }
         PreparedStatement preparedStatement = Application.getInstance().getConnection().prepareStatement("UPDATE Nutzer SET EMail = ?,Passwort = ?, Geburtsdatum = ?, Geschlecht = ?  WHERE Benutzername = ?");
         preparedStatement.setObject(1, newData.get("Nutzer.EMail"));
         preparedStatement.setObject(2, newData.get("Nutzer.Passwort"));
@@ -64,7 +69,7 @@ public class Account extends Table {
         }
         if (permission == 0) {
             PreparedStatement pstm = Application.getInstance().getConnection().prepareStatement("UPDATE Chefredakteur SET Telefonnummer = ? WHERE Benutzername = ?");
-            pstm.setObject(1, newData.get("Chefredakteur.Telefonnummer"));
+            pstm.setObject(1, "'" + newData.get(".Telefonnummer") + "'");
             pstm.setObject(2, Application.getInstance().getData().get("username"));
             pstm.executeUpdate();
 
@@ -74,5 +79,14 @@ public class Account extends Table {
     @Override
     public void deleteRowWithData(Data data) throws SQLException {
         throw new SQLException(getClass().getName() + ".deleteRowWithData(Data) nicht implementiert.");
+    }
+
+    private boolean isValidEmail(String email) {
+        String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+                + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+
+        Pattern pattern = Pattern.compile(EMAIL_PATTERN);
+        Matcher matcher = pattern.matcher(email);
+        return matcher.matches();
     }
 }

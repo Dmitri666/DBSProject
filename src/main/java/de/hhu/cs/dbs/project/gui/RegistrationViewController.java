@@ -11,8 +11,11 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class RegistrationViewController extends com.alexanderthelen.applicationkit.gui.RegistrationViewController {
     @FXML
@@ -162,6 +165,7 @@ public class RegistrationViewController extends com.alexanderthelen.applicationk
 
     @Override
     public Data getInputData() {
+
         Data data = new Data();
         data.put("username", usernameTextField.getText() == null ? null : usernameTextField.getText());
         data.put("email", emailTextField.getText() == null ? null : emailTextField.getText());
@@ -178,8 +182,11 @@ public class RegistrationViewController extends com.alexanderthelen.applicationk
         if(yesChefredakteurRadioButton.isSelected()) {
             data.put("telefonnummer", telefonnummerTextField.getText() == null ? null : biographieTextField.getText());
         }
+
+
         return data;
     }
+
 
 
     private void Validate(EventTarget target) {

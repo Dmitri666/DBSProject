@@ -8,6 +8,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class AuthenticationViewController extends com.alexanderthelen.applicationkit.gui.AuthenticationViewController {
     protected AuthenticationViewController(String name) {
@@ -22,6 +24,8 @@ public class AuthenticationViewController extends com.alexanderthelen.applicatio
 
     @Override
     public void loginUser(Data data) throws SQLException {
+        data.put("username","Lisa");
+        data.put("password","abc");
         String selectQuery = "SELECT Benutzername, Passwort FROM Nutzer WHERE Benutzername ='"  + data.get("username") + "' AND Passwort = '" + data.get("password") + "'";
         ResultSet result = Application.getInstance().getConnection().executeQuery(selectQuery);
         if(!result.next()) {
@@ -54,6 +58,10 @@ public class AuthenticationViewController extends com.alexanderthelen.applicatio
         result = Application.getInstance().getConnection().executeQuery(eMailQuery);
         if (result.next()) {
             throw new SQLException("EMail schon vergeben.");
+        }
+
+        if(!isValidEmail((String)data.get("email"))) {
+            throw new SQLException("Invalide Email");
         }
 
         com.alexanderthelen.applicationkit.database.Connection conn = Application.getInstance().getConnection();
@@ -90,7 +98,7 @@ public class AuthenticationViewController extends com.alexanderthelen.applicatio
                 PreparedStatement pstmt2 = Application.getInstance().getConnection().prepareStatement(actorSql);
 
                 pstmt2.setString(1, data.get("username").toString());
-                pstmt2.setString(2, data.get("telefonnummer").toString());
+                pstmt2.setString(2, "'" + data.get("telefonnummer").toString() + "'");
                 pstmt2.executeUpdate();
             }
 
@@ -108,5 +116,14 @@ public class AuthenticationViewController extends com.alexanderthelen.applicatio
             throw ex;
 
         }
+    }
+
+    private boolean isValidEmail(String email) {
+        String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+                + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+
+        Pattern pattern = Pattern.compile(EMAIL_PATTERN);
+        Matcher matcher = pattern.matcher(email);
+        return matcher.matches();
     }
 }
