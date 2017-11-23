@@ -22,29 +22,22 @@ public class AuthenticationViewController extends com.alexanderthelen.applicatio
 
     @Override
     public void loginUser(Data data) throws SQLException {
-        String selectQuery = "SELECT Benutzername,EMail,Geburtsdatum, Passwort,Geschlecht FROM Nutzer WHERE Email ='"  + data.get("email") + "' AND Passwort = '" + data.get("password") + "'";
+        String selectQuery = "SELECT Benutzername, Passwort FROM Nutzer WHERE Benutzername ='"  + data.get("username") + "' AND Passwort = '" + data.get("password") + "'";
         ResultSet result = Application.getInstance().getConnection().executeQuery(selectQuery);
         if(!result.next()) {
             throw new SQLException("Falsche Benutzername oder Passwort.");
         }
 
-        Application.getInstance().getData().put("email",result.getString("EMail"));
         Application.getInstance().getData().put("username",result.getString("Benutzername"));
-        Application.getInstance().getData().put("geburtsdatum",result.getString("Geburtsdatum"));
-        Application.getInstance().getData().put("sex",result.getString("Geschlecht"));
         Application.getInstance().getData().put("permission",2);
 
-        result = Application.getInstance().getConnection().executeQuery("SELECT Nachname, Vorname , Biographie FROM Redakteur WHERE Benutzername ='"  + Application.getInstance().getData().get("username") + "'");
+        result = Application.getInstance().getConnection().executeQuery("SELECT Nachname FROM Redakteur WHERE Benutzername ='"  + Application.getInstance().getData().get("username") + "'");
         if(result.next()) {
-            Application.getInstance().getData().put("nachname",result.getString("Nachname"));
-            Application.getInstance().getData().put("vorname",result.getString("Vorname"));
-            Application.getInstance().getData().put("biographie",result.getString("Biographie"));
             Application.getInstance().getData().replace("permission",1);
         }
 
         result = Application.getInstance().getConnection().executeQuery("SELECT Telefonnummer FROM Chefredakteur WHERE Benutzername ='"  + Application.getInstance().getData().get("username") + "'");
         if(result.next()) {
-            Application.getInstance().getData().put("telefonnummer",result.getString("Telefonnummer"));
             Application.getInstance().getData().replace("permission",0);
         }
     }

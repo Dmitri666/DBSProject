@@ -36,7 +36,7 @@ public class LoginViewController extends com.alexanderthelen.applicationkit.gui.
     @Override
     public Data getInputData() {
         Data data = new Data();
-        data.put("email", emailTextField.getText());
+        data.put("username", emailTextField.getText());
         data.put("password", passwordPasswordField.getText());
         return data;
     }
