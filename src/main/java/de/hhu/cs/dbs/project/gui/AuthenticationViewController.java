@@ -65,6 +65,10 @@ public class AuthenticationViewController extends com.alexanderthelen.applicatio
             throw new SQLException("Invalide Email");
         }
 
+        if(!Validator.isValidDate((String)data.get("birthday"))) {
+            throw new SQLException("Invalide birthday");
+        }
+
         com.alexanderthelen.applicationkit.database.Connection conn = Application.getInstance().getConnection();
         conn.getRawConnection().setAutoCommit(false);
 

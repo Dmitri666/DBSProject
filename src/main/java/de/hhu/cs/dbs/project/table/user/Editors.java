@@ -37,6 +37,10 @@ public class Editors extends Table {
         if(!Validator.isValidEmail((String)data.get("Nutzer.EMail"))) {
             throw new SQLException("Invalide Email");
         }
+        if(!Validator.isValidDate((String)data.get("Nutzer.Geburtsdatum"))) {
+            throw new SQLException("Invalide Geburtsdatum");
+        }
+
         {
             PreparedStatement preparedStatement = Application.getInstance().getConnection().prepareStatement("INSERT INTO Nutzer(Benutzername, EMail, Geburtsdatum, Passwort, Geschlecht) VALUES (?, ?, ?, ?, ?)");
             preparedStatement.setObject(1, data.get("Nutzer.Benutzername"));

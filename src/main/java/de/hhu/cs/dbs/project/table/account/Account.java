@@ -53,6 +53,9 @@ public class Account extends Table {
         if(!Validator.isValidEmail((String)newData.get("Nutzer.EMail"))) {
             throw new SQLException("Invalide Email");
         }
+        if(!Validator.isValidDate((String)newData.get("Nutzer.Geburtsdatum"))) {
+            throw new SQLException("Invalide Geburtsdatum");
+        }
 
         PreparedStatement preparedStatement = Application.getInstance().getConnection().prepareStatement("UPDATE Nutzer SET EMail = ?,Passwort = ?, Geburtsdatum = ?, Geschlecht = ?  WHERE Benutzername = ?");
         preparedStatement.setObject(1, newData.get("Nutzer.EMail"));

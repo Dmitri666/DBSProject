@@ -3,7 +3,10 @@ package de.hhu.cs.dbs.project;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TextField;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Collections;
+import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -15,5 +18,16 @@ public class Validator {
         Pattern pattern = Pattern.compile(EMAIL_PATTERN);
         Matcher matcher = pattern.matcher(email);
         return matcher.matches();
+    }
+
+    public static boolean isValidDate(String date) {
+        SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
+        try {
+            Date d = format.parse(date);
+        }
+        catch (ParseException e) {
+            return false;
+        }
+        return true;
     }
 }
