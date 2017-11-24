@@ -1,33 +1,86 @@
 package de.hhu.cs.dbs.project.table.comment;
 
+import com.alexanderthelen.applicationkit.Application;
 import com.alexanderthelen.applicationkit.database.Data;
 import com.alexanderthelen.applicationkit.database.Table;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class Comments extends Table {
     @Override
     public String getSelectQueryForTableWithFilter(String filter) throws SQLException {
-        throw new SQLException(getClass().getName() + ".getSelectQueryForTableWithFilter(String) nicht implementiert.");
+        String selectQuery = "SELECT K.*  FROM Kommentar K ";
+        if ( filter != null && ! filter .isEmpty() )
+        {
+            selectQuery += " WHERE K.Nutzer LIKE '%" + filter + "%'"  ;
+        }
+        selectQuery = selectQuery + " ORDER BY K.Nutzer";
+        return selectQuery;
     }
 
     @Override
     public String getSelectQueryForRowWithData(Data data) throws SQLException {
-        throw new SQLException(getClass().getName() + ".getSelectQueryForRowWithData(Data) nicht implementiert.");
+        String selectQuery = String.format("SELECT K.ID, K.Text, K.Blogeintrag  FROM Kommentar K WHERE K.ID ='%s' ",data.get("Kommentar.ID"));
+        return selectQuery;
     }
 
     @Override
     public void insertRowWithData(Data data) throws SQLException {
-        throw new SQLException(getClass().getName() + ".insertRowWithData(Data) nicht implementiert.");
+        String username = (String) Application.getInstance().getData().get("username");
+        SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
+
+        PreparedStatement preparedStatement = Application.getInstance().getConnection().prepareStatement("INSERT INTO Kommentar(Text, Erstelldatum, Nutzer,Blogeintrag) VALUES (?, ?, ?, ?)");
+        preparedStatement.setObject(1, data.get("Kommentar.Text"));
+        preparedStatement.setObject(2, format.format(new Date()));
+        preparedStatement.setObject(3, username);
+        preparedStatement.setObject(4, data.get("Kommentar.Blogeintrag"));
+        preparedStatement.executeUpdate();
     }
 
     @Override
     public void updateRowWithData(Data oldData, Data newData) throws SQLException {
-        throw new SQLException(getClass().getName() + ".updateRowWithData(Data, Data) nicht implementiert.");
+        String username = (String) Application.getInstance().getData().get("username");
+        String kommentator = getKommentator((Integer) oldData.get("Kommentar.ID"));
+        if (!username.equals(kommentator)) {
+            throw new SQLException("Keine Berechtigungen.");
+        }
+
+        PreparedStatement preparedStatement = Application.getInstance().getConnection().prepareStatement("UPDATE Kommentar SET Text = ? WHERE ID = ? ");
+        preparedStatement.setObject(1, newData.get("Kommentar.Text"));
+        preparedStatement.setObject(2, oldData.get("Kommentar.ID"));
+        preparedStatement.executeUpdate();
     }
 
     @Override
     public void deleteRowWithData(Data data) throws SQLException {
-        throw new SQLException(getClass().getName() + ".deleteRowWithData(Data) nicht implementiert.");
+        Integer permission = (Integer) Application.getInstance().getData().get("permission");
+
+        if (permission != 0) {
+            String username = (String) Application.getInstance().getData().get("username");
+            String kommentator = getKommentator((Integer) data.get("Kommentar.ID"));
+            if (!username.equals(kommentator)) {
+                throw new SQLException("Keine Berechtigungen.");
+            }
+        }
+        PreparedStatement preparedStatement = Application.getInstance().getConnection().prepareStatement("DELETE FROM Kommentar WHERE ID = ?");
+        preparedStatement.setObject(1, data.get("Kommentar.ID"));
+        preparedStatement.executeUpdate();
+    }
+
+    private String getKommentator(Integer id) throws SQLException{
+        String selectQuery = String.format("SELECT K.Nutzer FROM Kommentar K WHERE K.ID = '%s'", id);
+
+        ResultSet result = Application.getInstance().getConnection().executeQuery(selectQuery);
+        if(!result.next()) {
+            throw new SQLException("Fehler");
+        }
+
+
+
+        return result.getString("Nutzer");
     }
 }

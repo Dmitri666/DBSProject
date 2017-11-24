@@ -46,7 +46,7 @@ CREATE TABLE IF NOT EXISTS Blogeintrag (
 	Titel	VARCHAR NOT NULL COLLATE NOCASE,
 	Text	TEXT NOT NULL,
     Erstellungsdatum	VARCHAR NOT NULL,
-    Änderungsdatum	VARCHAR,
+    Aenderungsdatum	VARCHAR,
 	Redakteur	VARCHAR NOT NULL REFERENCES Redakteur (Benutzername) ON UPDATE CASCADE ON DELETE CASCADE COLLATE NOCASE
 );
 

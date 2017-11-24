@@ -21,26 +21,28 @@ INSERT INTO Nutzer (EMail, Geburtsdatum, Geschlecht, Benutzername, Passwort) VAL
 INSERT INTO Nutzer (EMail, Geburtsdatum, Geschlecht, Benutzername, Passwort) VALUES ('anker100@hhu.de', '01.01.1995', 'weiblich', 'Anna', 'abc');
 INSERT INTO Nutzer (EMail, Geburtsdatum, Geschlecht, Benutzername, Passwort) VALUES ('dagro100@hhu.de', '11.11.1991', 'maennlich', 'Danny', 'abc');
 INSERT INTO Nutzer (EMail, Geburtsdatum, Geschlecht, Benutzername, Passwort) VALUES ('david123@gmx.de', '02.04.1990', 'maennlich', 'David', 'abc');
+INSERT INTO Nutzer (EMail, Geburtsdatum, Geschlecht, Benutzername, Passwort) VALUES ('sebastian123@gmx.de', '02.04.1990', 'maennlich', 'Sebastian', 'abc');
 
 
 INSERT INTO Redakteur (Benutzername, Vorname, Nachname, Biographie) VALUES ('Lisa', 'Elisabeth', 'Levin', NULL);
 INSERT INTO Redakteur (Benutzername, Vorname, Nachname, Biographie) VALUES ('David', 'David', 'Meier', NULL);
+INSERT INTO Redakteur (Benutzername, Vorname, Nachname, Biographie) VALUES ('Sebastian', 'Sebastian', 'Weigert', NULL);
 
 
 INSERT INTO Chefredakteur (Benutzername, Telefonnummer) VALUES ('Lisa', '''+49 01766160452''');
 INSERT INTO Chefredakteur (Benutzername, Telefonnummer) VALUES ('David', '''017249582834''');
 
 
-INSERT INTO Blogeintrag (ID, Titel, Text, Erstellungsdatum, Aenderungsdatum, Redakteur) VALUES (1, 'Videoblog1', 'abc', '2015-11-03', '2017-11-11', 'Lisa');
-INSERT INTO Blogeintrag (ID, Titel, Text, Erstellungsdatum, Aenderungsdatum, Redakteur) VALUES (2, 'Videoblog2', 'abc', '2015-12-11', '2017-11-11', 'Lisa');
-INSERT INTO Blogeintrag (ID, Titel, Text, Erstellungsdatum, Aenderungsdatum, Redakteur) VALUES (3, 'Album1', 'abc', '2017-01-09', '2017-11-11', 'Lisa');
-INSERT INTO Blogeintrag (ID, Titel, Text, Erstellungsdatum, Aenderungsdatum, Redakteur) VALUES (4, 'Album2', 'abc', '2016-10-28', '2017-11-11', 'Lisa');
-INSERT INTO Blogeintrag (ID, Titel, Text, Erstellungsdatum, Aenderungsdatum, Redakteur) VALUES (5, 'RezensionV1', 'abc', '2017-03-11', '2017-11-11', 'David');
-INSERT INTO Blogeintrag (ID, Titel, Text, Erstellungsdatum, Aenderungsdatum, Redakteur) VALUES (6, 'RezensionV2', 'abc', '2017-09-20', '2017-11-11', 'David');
-INSERT INTO Blogeintrag (ID, Titel, Text, Erstellungsdatum, Aenderungsdatum, Redakteur) VALUES (7, 'RezensionA1', 'abc', '2016-01-03', '2017-11-11', 'David');
-INSERT INTO Blogeintrag (ID, Titel, Text, Erstellungsdatum, Aenderungsdatum, Redakteur) VALUES (8, 'RezensionA2', 'abc', '2017-01-11', '2017-11-11', 'David');
-INSERT INTO Blogeintrag (ID, Titel, Text, Erstellungsdatum, Aenderungsdatum, Redakteur) VALUES (9, 'Album3', 'abc', '2017-06-08', '2017-11-11', 'Lisa');
-INSERT INTO Blogeintrag (ID, Titel, Text, Erstellungsdatum, Aenderungsdatum, Redakteur) VALUES (10, 'Videoblog3', 'abc', '2017-11-01', '2017-11-11', 'David');
+INSERT INTO Blogeintrag (ID, Titel, Text, Erstellungsdatum, Aenderungsdatum, Redakteur) VALUES (1, 'Videoblog1', 'abc', '11.11.2017', '11.11.2017', 'Lisa');
+INSERT INTO Blogeintrag (ID, Titel, Text, Erstellungsdatum, Aenderungsdatum, Redakteur) VALUES (2, 'Videoblog2', 'abc', '11.11.2017', '11.10.2017', 'Lisa');
+INSERT INTO Blogeintrag (ID, Titel, Text, Erstellungsdatum, Aenderungsdatum, Redakteur) VALUES (3, 'Album1', 'abc', '10.11.2017', '11.11.2017', 'Lisa');
+INSERT INTO Blogeintrag (ID, Titel, Text, Erstellungsdatum, Aenderungsdatum, Redakteur) VALUES (4, 'Album2', 'abc', '01.11.2017', '11.11.2017', 'Lisa');
+INSERT INTO Blogeintrag (ID, Titel, Text, Erstellungsdatum, Aenderungsdatum, Redakteur) VALUES (5, 'RezensionV1', 'abc', '11.01.2017', '11.11.2017', 'David');
+INSERT INTO Blogeintrag (ID, Titel, Text, Erstellungsdatum, Aenderungsdatum, Redakteur) VALUES (6, 'RezensionV2', 'abc', '18.09.2017', '11.11.2017', 'David');
+INSERT INTO Blogeintrag (ID, Titel, Text, Erstellungsdatum, Aenderungsdatum, Redakteur) VALUES (7, 'RezensionA1', 'abc', '11.11.2016', '11.11.2017', 'David');
+INSERT INTO Blogeintrag (ID, Titel, Text, Erstellungsdatum, Aenderungsdatum, Redakteur) VALUES (8, 'RezensionA2', 'abc', '11.10.2017', '11.11.2017', 'David');
+INSERT INTO Blogeintrag (ID, Titel, Text, Erstellungsdatum, Aenderungsdatum, Redakteur) VALUES (9, 'Album3', 'abc', '11.03.2017', '11.11.2017', 'Lisa');
+INSERT INTO Blogeintrag (ID, Titel, Text, Erstellungsdatum, Aenderungsdatum, Redakteur) VALUES (10, 'Videoblog3', 'abc', '05.11.2017', '11.11.2017', 'David');
 
 
 INSERT INTO Produktrezension (ID, Produktbezeichnung, Fazit) VALUES (5, 'V1', 'abc');
@@ -70,8 +72,8 @@ INSERT INTO Schlagwort (Bezeichnung) VALUES ('abc');
 INSERT INTO Schlagwort (Bezeichnung) VALUES ('xxx');
 
 
-INSERT INTO Kommentar (ID, Text, Erstelldatum, Nutzer, Blogeintrag) VALUES (200, 'abc', '11.11.20176', 'Lisa', '5');
-INSERT INTO Kommentar (ID, Text, Erstelldatum, Nutzer, Blogeintrag) VALUES (201, 'abc', '11.11.2017', 'Anna', '3');
+INSERT INTO Kommentar (ID, Text, Erstelldatum, Nutzer, Blogeintrag) VALUES (200, 'abc', '01.12.2017', 'Lisa', '5');
+INSERT INTO Kommentar (ID, Text, Erstelldatum, Nutzer, Blogeintrag) VALUES (201, 'abc', '09.01.2017', 'Anna', '3');
 
 
 INSERT INTO BewertungBlogeintrag (Bewertungsskala, Nutzer, Blogeintrag) VALUES (9, 'Anna', 2);

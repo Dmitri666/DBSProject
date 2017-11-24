@@ -3,6 +3,7 @@ package de.hhu.cs.dbs.project.table.account;
 import com.alexanderthelen.applicationkit.Application;
 import com.alexanderthelen.applicationkit.database.Data;
 import com.alexanderthelen.applicationkit.database.Table;
+import de.hhu.cs.dbs.project.Validator;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -45,9 +46,14 @@ public class Account extends Table {
 
     @Override
     public void updateRowWithData(Data oldData, Data newData) throws SQLException {
-        if(!isValidEmail((String)newData.get("Nutzer.EMail"))) {
+        if(newData.get(".Telefonnummer") == null) {
+            throw new SQLException("Invalide Telefonnummer");
+        }
+
+        if(!Validator.isValidEmail((String)newData.get("Nutzer.EMail"))) {
             throw new SQLException("Invalide Email");
         }
+
         PreparedStatement preparedStatement = Application.getInstance().getConnection().prepareStatement("UPDATE Nutzer SET EMail = ?,Passwort = ?, Geburtsdatum = ?, Geschlecht = ?  WHERE Benutzername = ?");
         preparedStatement.setObject(1, newData.get("Nutzer.EMail"));
         preparedStatement.setObject(2, newData.get("Nutzer.Passwort"));
@@ -81,12 +87,5 @@ public class Account extends Table {
         throw new SQLException(getClass().getName() + ".deleteRowWithData(Data) nicht implementiert.");
     }
 
-    private boolean isValidEmail(String email) {
-        String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
-                + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 
-        Pattern pattern = Pattern.compile(EMAIL_PATTERN);
-        Matcher matcher = pattern.matcher(email);
-        return matcher.matches();
-    }
 }

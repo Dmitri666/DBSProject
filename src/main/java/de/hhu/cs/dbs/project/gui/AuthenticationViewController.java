@@ -2,6 +2,7 @@ package de.hhu.cs.dbs.project.gui;
 
 import com.alexanderthelen.applicationkit.Application;
 import com.alexanderthelen.applicationkit.database.Data;
+import de.hhu.cs.dbs.project.Validator;
 
 import java.io.IOException;
 import java.sql.PreparedStatement;
@@ -60,7 +61,7 @@ public class AuthenticationViewController extends com.alexanderthelen.applicatio
             throw new SQLException("EMail schon vergeben.");
         }
 
-        if(!isValidEmail((String)data.get("email"))) {
+        if(!Validator.isValidEmail((String)data.get("email"))) {
             throw new SQLException("Invalide Email");
         }
 
@@ -118,12 +119,5 @@ public class AuthenticationViewController extends com.alexanderthelen.applicatio
         }
     }
 
-    private boolean isValidEmail(String email) {
-        String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
-                + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 
-        Pattern pattern = Pattern.compile(EMAIL_PATTERN);
-        Matcher matcher = pattern.matcher(email);
-        return matcher.matches();
-    }
 }
