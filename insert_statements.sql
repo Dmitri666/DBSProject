@@ -56,13 +56,13 @@ INSERT INTO Produktrezension (ID, Produktbezeichnung, Fazit) VALUES (7, 'A1', 'a
 INSERT INTO Produktrezension (ID, Produktbezeichnung, Fazit) VALUES (8, 'A2', 'abc');
 
 
-INSERT INTO Videoblog (ID, Spiellaenge, Link720p, Link1080p) VALUES (1, '05:00', 'link1', NULL);
-INSERT INTO Videoblog (ID, Spiellaenge, Link720p, Link1080p) VALUES (2, '01:30', 'link2', 'link3');
-INSERT INTO Videoblog (ID, Spiellaenge, Link720p, Link1080p) VALUES (10, '06:00', 'link4', 'link5');
-INSERT INTO Videoblog (ID, Spiellaenge, Link720p, Link1080p) VALUES (13, '01:30', 'link5', 'link3');
-INSERT INTO Videoblog (ID, Spiellaenge, Link720p, Link1080p) VALUES (14, '06:00', 'link6', 'link5');
-INSERT INTO Videoblog (ID, Spiellaenge, Link720p, Link1080p) VALUES (15, '02:30', 'link7', NULL);
-INSERT INTO Videoblog (ID, Spiellaenge, Link720p, Link1080p) VALUES (16, '05:00', 'link8', 'link5');
+INSERT INTO Videoblog (ID, Spiellaenge, Link720p, Link1080p) VALUES (1, 5, 'link1', NULL);
+INSERT INTO Videoblog (ID, Spiellaenge, Link720p, Link1080p) VALUES (2, 30, 'link2', 'link3');
+INSERT INTO Videoblog (ID, Spiellaenge, Link720p, Link1080p) VALUES (10, 600, 'link4', 'link5');
+INSERT INTO Videoblog (ID, Spiellaenge, Link720p, Link1080p) VALUES (13, 130, 'link5', 'link3');
+INSERT INTO Videoblog (ID, Spiellaenge, Link720p, Link1080p) VALUES (14, 60, 'link6', 'link5');
+INSERT INTO Videoblog (ID, Spiellaenge, Link720p, Link1080p) VALUES (15, 230, 'link7', NULL);
+INSERT INTO Videoblog (ID, Spiellaenge, Link720p, Link1080p) VALUES (16, 500, 'link8', 'link5');
 
 
 INSERT INTO Album (ID, Sichtbarkeit) VALUES (3, 'oeffentlich');

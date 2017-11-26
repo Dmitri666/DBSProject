@@ -85,9 +85,9 @@ public class Videoblogs extends Table {
 
         PreparedStatement preparedStatement = Application.getInstance().getConnection().prepareStatement("UPDATE Videoblog SET Spiellaenge = ?,Link720p = ?,Link1080p = ?   WHERE ID = ? ");
         preparedStatement.setObject(1, newData.get("Videoblog.Spiellaenge"));
-        preparedStatement.setObject(1, newData.get("Videoblog.Link720p"));
-        preparedStatement.setObject(1, newData.get("Videoblog.Link1080p"));
-        preparedStatement.setObject(2, oldData.get("Videoblog.ID"));
+        preparedStatement.setObject(2, newData.get("Videoblog.Link720p"));
+        preparedStatement.setObject(3, newData.get("Videoblog.Link1080p"));
+        preparedStatement.setObject(4, oldData.get("Videoblog.ID"));
         preparedStatement.executeUpdate();
     }
 
