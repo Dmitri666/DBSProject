@@ -3,6 +3,7 @@ package de.hhu.cs.dbs.project.table.account;
 import com.alexanderthelen.applicationkit.Application;
 import com.alexanderthelen.applicationkit.database.Data;
 import com.alexanderthelen.applicationkit.database.Table;
+import de.hhu.cs.dbs.project.table.SqlUtil;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -12,10 +13,10 @@ public class Favorites extends Table {
     @Override
     public String getSelectQueryForTableWithFilter(String filter) throws SQLException {
         String username = (String)Application.getInstance().getData().get("username");
-        String selectQuery = String.format("SELECT B.*  FROM Blogeintrag B INNER JOIN NutzerFavorisiertBlogeintrag F ON B.ID = F.Blogeintrag  WHERE F.Nutzer = '%s' ", username);
+        String selectQuery = String.format("SELECT B.ID, B.Redakteur, B.Titel, B.Text  FROM Blogeintrag B INNER JOIN NutzerFavorisiertBlogeintrag F ON B.ID = F.Blogeintrag  WHERE F.Nutzer = '%s' ", username);
         if ( filter != null && ! filter .isEmpty() )
         {
-            selectQuery += " AND B.Redakteur LIKE '%" + filter + "%'";
+            selectQuery += " AND (B.Redakteur LIKE '%" + filter + "%' OR B.Titel LIKE '%" + filter + "%' OR B.Text LIKE '%" + filter + "%')";
         }
         selectQuery = selectQuery + " ORDER BY B.Aenderungsdatum";
         return selectQuery;
@@ -32,7 +33,7 @@ public class Favorites extends Table {
     @Override
     public void insertRowWithData(Data data) throws SQLException {
         String username = (String)Application.getInstance().getData().get("username");
-        String redacteur = getRedacteur((Integer) data.get("NutzerFavorisiertBlogeintrag.Blogeintrag"));
+        String redacteur = SqlUtil.getRedacteurByBlogeintrag((Integer) data.get("NutzerFavorisiertBlogeintrag.Blogeintrag"));
         if (username.equals(redacteur)) {
             throw new SQLException("Gleiche Nutzer.");
         }
@@ -46,7 +47,7 @@ public class Favorites extends Table {
     @Override
     public void updateRowWithData(Data oldData, Data newData) throws SQLException {
         String username = (String)Application.getInstance().getData().get("username");
-        String redacteur = getRedacteur((Integer) newData.get("NutzerFavorisiertBlogeintrag.Blogeintrag"));
+        String redacteur = SqlUtil.getRedacteurByBlogeintrag((Integer) newData.get("NutzerFavorisiertBlogeintrag.Blogeintrag"));
         if (username.equals(redacteur)) {
             throw new SQLException("Gleiche Nutzer.");
         }
@@ -66,13 +67,5 @@ public class Favorites extends Table {
         preparedStatement.executeUpdate();
     }
 
-    private String getRedacteur(Integer blogeintrag) throws SQLException{
-        String selectQuery = String.format("SELECT B.Redakteur FROM Blogeintrag B WHERE B.ID = '%s'", blogeintrag);
 
-        ResultSet result = Application.getInstance().getConnection().executeQuery(selectQuery);
-        if(!result.next()) {
-            throw new SQLException("Fehler");
-        }
-        return result.getString("Redakteur");
-    }
 }

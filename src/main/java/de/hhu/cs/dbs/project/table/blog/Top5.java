@@ -8,7 +8,7 @@ import java.sql.SQLException;
 public class Top5 extends Table {
     @Override
     public String getSelectQueryForTableWithFilter(String filter) throws SQLException {
-        throw new SQLException(getClass().getName() + ".getSelectQueryForTableWithFilter(String) nicht implementiert.");
+        return "SELECT B.ID,B.Redakteur,B.Titel,avg(BW.Bewertungsskala) AS Bewertung from Videoblog V,Blogeintrag B, BewertungBlogeintrag BW WHERE V.ID = BW.Blogeintrag AND B.ID = BW.Blogeintrag GROUP BY B.ID,B.Redakteur,B.Titel order by Bewertung desc limit 5";
     }
 
     @Override

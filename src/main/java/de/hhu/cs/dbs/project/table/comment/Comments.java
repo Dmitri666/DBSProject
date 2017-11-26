@@ -3,6 +3,7 @@ package de.hhu.cs.dbs.project.table.comment;
 import com.alexanderthelen.applicationkit.Application;
 import com.alexanderthelen.applicationkit.database.Data;
 import com.alexanderthelen.applicationkit.database.Table;
+import de.hhu.cs.dbs.project.table.SqlUtil;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -13,7 +14,8 @@ import java.util.Date;
 public class Comments extends Table {
     @Override
     public String getSelectQueryForTableWithFilter(String filter) throws SQLException {
-        String selectQuery = "SELECT K.*  FROM Kommentar K ";
+        String selectQuery = "SELECT K.ID, B.ID AS Blogeintrag, K.Nutzer, K.Text, K.Erstelldatum, SUM(B.Bewertung) AS Bewertung  FROM Blogeintrag B INNER JOIN Kommentar K ON B.ID = K.Blogeintrag LEFT OUTER JOIN NutzerBewertetKommentar B ON K.ID = B.Kommentar\n" +
+                "GROUP BY K.ID, K.Nutzer, K.Text, K.Erstelldatum ";
         if ( filter != null && ! filter .isEmpty() )
         {
             selectQuery += " WHERE K.Nutzer LIKE '%" + filter + "%'"  ;
@@ -44,7 +46,7 @@ public class Comments extends Table {
     @Override
     public void updateRowWithData(Data oldData, Data newData) throws SQLException {
         String username = (String) Application.getInstance().getData().get("username");
-        String kommentator = getKommentator((Integer) oldData.get("Kommentar.ID"));
+        String kommentator = SqlUtil.getNutzerByKommentar((Integer) oldData.get("Kommentar.ID"));
         if (!username.equals(kommentator)) {
             throw new SQLException("Keine Berechtigungen.");
         }
@@ -61,7 +63,7 @@ public class Comments extends Table {
 
         if (permission != 0) {
             String username = (String) Application.getInstance().getData().get("username");
-            String kommentator = getKommentator((Integer) data.get("Kommentar.ID"));
+            String kommentator = SqlUtil.getNutzerByKommentar((Integer) data.get("Kommentar.ID"));
             if (!username.equals(kommentator)) {
                 throw new SQLException("Keine Berechtigungen.");
             }
@@ -71,16 +73,5 @@ public class Comments extends Table {
         preparedStatement.executeUpdate();
     }
 
-    private String getKommentator(Integer id) throws SQLException{
-        String selectQuery = String.format("SELECT K.Nutzer FROM Kommentar K WHERE K.ID = '%s'", id);
 
-        ResultSet result = Application.getInstance().getConnection().executeQuery(selectQuery);
-        if(!result.next()) {
-            throw new SQLException("Fehler");
-        }
-
-
-
-        return result.getString("Nutzer");
-    }
 }

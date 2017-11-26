@@ -8,6 +8,8 @@ import de.hhu.cs.dbs.project.gui.LoginViewController;
 import de.hhu.cs.dbs.project.gui.MasterViewController;
 import de.hhu.cs.dbs.project.gui.RegistrationViewController;
 
+import java.nio.file.Paths;
+
 public class Project extends com.alexanderthelen.applicationkit.Application {
     public static void main(String[] args) {
         launch(args);
@@ -15,7 +17,8 @@ public class Project extends com.alexanderthelen.applicationkit.Application {
 
     @Override
     public void start() throws Exception {
-        setConnection(new Connection("jdbc:sqlite:project.db"));
+        setConnection(new Connection("jdbc:sqlite:" + Paths.get("project.db")));
+        //setConnection(new Connection(Paths.get("project.db"));
 
         WindowController mainWindowController = WindowController.createWithName("window");
         mainWindowController.setTitle("Projekt");

@@ -4,6 +4,7 @@ import com.alexanderthelen.applicationkit.Application;
 import com.alexanderthelen.applicationkit.database.Data;
 import com.alexanderthelen.applicationkit.database.Table;
 import de.hhu.cs.dbs.project.Validator;
+import de.hhu.cs.dbs.project.table.SqlUtil;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -65,7 +66,7 @@ public class Users extends Table {
             throw new SQLException("Keine Berechtigungen.");
         }
 
-        if (isChiefRedacteur((String) data.get("Nutzer.Benutzername"))) {
+        if (SqlUtil.isChiefRedacteur((String) data.get("Nutzer.Benutzername"))) {
             throw new SQLException("Keine Berechtigungen.");
         }
 
@@ -75,11 +76,5 @@ public class Users extends Table {
     }
 
 
-    private Boolean isChiefRedacteur(String Benutzername) throws SQLException{
-        String selectQuery = String.format("SELECT B.Benutzername FROM Chefredakteur B WHERE B.Benutzername = '%s'", Benutzername);
 
-        ResultSet result = Application.getInstance().getConnection().executeQuery(selectQuery);
-        return result.next();
-
-    }
 }

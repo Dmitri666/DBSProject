@@ -25,8 +25,8 @@ public class AuthenticationViewController extends com.alexanderthelen.applicatio
 
     @Override
     public void loginUser(Data data) throws SQLException {
-        data.put("username","Lisa");
-        data.put("password","abc");
+        //data.put("username","Lisa");
+        //data.put("password","abc");
         String selectQuery = "SELECT Benutzername, Passwort FROM Nutzer WHERE Benutzername ='"  + data.get("username") + "' AND Passwort = '" + data.get("password") + "'";
         ResultSet result = Application.getInstance().getConnection().executeQuery(selectQuery);
         if(!result.next()) {
