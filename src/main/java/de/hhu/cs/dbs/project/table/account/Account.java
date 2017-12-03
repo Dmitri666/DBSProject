@@ -46,8 +46,12 @@ public class Account extends Table {
 
     @Override
     public void updateRowWithData(Data oldData, Data newData) throws SQLException {
-        if(newData.get(".Telefonnummer") == null) {
-            throw new SQLException("Invalide Telefonnummer");
+        Integer permission = (Integer) Application.getInstance().getData().get("permission");
+
+        if(permission == 0) {
+            if (newData.get(".Telefonnummer") == null) {
+                throw new SQLException("Invalide Telefonnummer");
+            }
         }
 
         if(!Validator.isValidEmail((String)newData.get("Nutzer.EMail"))) {
@@ -65,7 +69,7 @@ public class Account extends Table {
         preparedStatement.setObject(5, Application.getInstance().getData().get("username"));
         preparedStatement.executeUpdate();
 
-        Integer permission = (Integer) Application.getInstance().getData().get("permission");
+
 
         if (permission == 1  || permission == 0) {
 

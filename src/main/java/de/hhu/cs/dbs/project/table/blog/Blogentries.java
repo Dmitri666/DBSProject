@@ -14,7 +14,7 @@ import java.util.Date;
 public class Blogentries extends Table {
     @Override
     public String getSelectQueryForTableWithFilter(String filter) throws SQLException {
-        String selectQuery = "SELECT B.ID, B.Redakteur, B.Titel, B.Text, B.Erstellungsdatum, B.Aenderungsdatum, group_concat(T.Schlagwort) AS Schlagworte" +
+        String selectQuery = "SELECT B.ID, B.Redakteur, B.Titel, B.Text, B.Erstellungsdatum AS Erstellungsdatum, B.Aenderungsdatum AS Aenderungsdatum , group_concat(T.Schlagwort) AS Schlagworte" +
                 "  FROM Blogeintrag B LEFT OUTER JOIN BlogeintragHatSchlagwort T ON B.ID = T.Blogeintrag" +
                 "     GROUP BY  B.ID, B.Redakteur, B.Titel, B.Text, B.Erstellungsdatum, B.Aenderungsdatum\n";
 
@@ -38,7 +38,7 @@ public class Blogentries extends Table {
 
         }
 
-        selectQuery = selectQuery + " ORDER BY B.Aenderungsdatum DESC";
+        selectQuery = selectQuery + " ORDER BY date(B.Aenderungsdatum) DESC";
         return selectQuery;
     }
 
@@ -50,7 +50,7 @@ public class Blogentries extends Table {
 
     @Override
     public void insertRowWithData(Data data) throws SQLException {
-        SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 
         Integer permission = (Integer) Application.getInstance().getData().get("permission");
         if (permission > 1) {
@@ -137,7 +137,7 @@ public class Blogentries extends Table {
 
 
         try {
-            SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
             PreparedStatement preparedStatement = Application.getInstance().getConnection().prepareStatement("UPDATE Blogeintrag SET Titel = ?, Text = ?, Aenderungsdatum = ? WHERE ID = ? ");
             preparedStatement.setObject(1, newData.get("Blogeintrag.Titel"));
             preparedStatement.setObject(2, newData.get("Blogeintrag.Text"));

@@ -33,7 +33,7 @@ public class Comments extends Table {
     @Override
     public void insertRowWithData(Data data) throws SQLException {
         String username = (String) Application.getInstance().getData().get("username");
-        SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 
         PreparedStatement preparedStatement = Application.getInstance().getConnection().prepareStatement("INSERT INTO Kommentar(Text, Erstelldatum, Nutzer,Blogeintrag) VALUES (?, ?, ?, ?)");
         preparedStatement.setObject(1, data.get("Kommentar.Text"));

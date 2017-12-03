@@ -15,7 +15,7 @@ public class Reviews extends Table {
 
         if ( filter != null && ! filter .isEmpty() )
         {
-            selectQuery += " WHERE P.Produktbezeichnung LIKE '%"+ filter +"%' ";
+            selectQuery += " AND P.Produktbezeichnung LIKE '%"+ filter +"%' ";
         }
         selectQuery = selectQuery + " ORDER BY B.Aenderungsdatum desc";
         return selectQuery;

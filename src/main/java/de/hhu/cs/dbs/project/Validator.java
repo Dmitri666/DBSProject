@@ -21,7 +21,7 @@ public class Validator {
     }
 
     public static boolean isValidDate(String date) {
-        SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         try {
             Date d = format.parse(date);
         }

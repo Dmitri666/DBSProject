@@ -6,10 +6,8 @@ import com.alexanderthelen.applicationkit.database.Table;
 import de.hhu.cs.dbs.project.table.SqlUtil;
 
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+
 
 public class Images extends Table {
     @Override
